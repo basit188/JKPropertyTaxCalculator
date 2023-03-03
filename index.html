@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>J&K Property Tax Calculator</title>
+	<script src="jq.js"></script>
+	<link href="bs.css" rel="stylesheet">
+	<script src="bs.js"></script>
+
+	<style>
+		.col-sm-12,
+		.col-sm-6,
+		.col-sm-3,
+		.col-sm-4 {
+			margin-top: 10px;
+		}
+		
+		.tav_formula{
+			font-family: monospace;
+		}
+		.tav_info {
+			transform: translate(-70%, -80%) !important;
+			left: 100% !important;
+			top: 0 !important;
+			position: absolute !important;
+			font-size: 0.5 rem;
+			font-weight: 500;
+			font-family: monospace;
+		}
+		.btn{
+			margin-top: 0.3rem;
+		}
+	</style>
+
+</head>
+
+<body class="container">
+
+
+	<div class="p-1 mb-4 bg-light rounded-3">
+		<div class="container-fluid py-3">
+			<h1 class="display-3 text-center">J&K Property Tax Calculator</h1>
+		</div>
+	</div>
+
+
+
+	<div class="row">
+
+		<div class="col-sm-6">
+			<label for="district">District:</label>
+			<select name="district" class="form-control" id="district">
+				<option value="Jammu">Jammu</option>
+				<option value="Srinagar">Srinagar</option>
+				<option value="Anantnag">Anantnag</option>
+				<option value="Bandipora">Bandipora</option>
+				<option value="Baramulla">Baramulla</option>
+				<option value="Budgam">Budgam</option>
+				<option value="Doda">Doda</option>
+				<option value="Ganderbal">Ganderbal</option>
+				<option value="Kathua">Kathua</option>
+				<option value="Kishtwar">Kishtwar</option>
+				<option value="Kulgam">Kulgam</option>
+				<option value="Kupwara">Kupwara</option>
+				<option value="Poonch">Poonch</option>
+				<option value="Pulwama">Pulwama</option>
+				<option value="Rajouri">Rajouri</option>
+				<option value="Ramban">Ramban</option>
+				<option value="Reasi">Reasi</option>
+				<option value="Samba">Samba</option>
+				<option value="Shopian">Shopian</option>
+				<option value="Udhampur">Udhampur</option>
+			</select>
+
+		</div>
+
+		<div class="col-sm-6">
+
+			<label for="municipality">Municipality: </label>
+			<select name="municipality" class="form-control" id="municipality">
+			</select>
+		</div>
+
+	</div>
+
+	<hr>
+
+
+	<h2>Land Details</h2>
+
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label for="land_kanal">Kanal</label>
+			<input type="number" min="0"
+				onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+				class="form-control" name="kanal" id="land_kanal" placeholder="Kanal" />
+		</div>
+
+		<div class="col-sm-3">
+			<label for="land_marla">Marla</label>
+			<input type="number" class="form-control" min="0"
+				onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+				name="marla" id="land_marla" placeholder="Marla" />
+		</div>
+
+		<div class="col-sm-3">
+			<label for="land_sirsai">Sarsahi/ Karam</label>
+			<input type="number" class="form-control" min="0"
+				onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+				name="sirsai" id="land_sirsai" placeholder="Sarsahi/ Karam" />
+		</div>
+
+		<div class="col-sm-3">
+			<label for="land_sft">Square Feet</label>
+			<input type="number" class="form-control" min="0"
+				onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+				name="land_sft" id="land_sft" placeholder="Sq.Ft." />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<label for="land_rate">Land Rate (Rs. in lacs)</label>
+			<input class="form-control" min="0"
+				onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+				type="number" name="land_rate" id="land_rate" placeholder="e.g. 14.23 for Rs. 14 Lac and 23 Thousand">
+		</div>
+
+		<div class="col-sm-6">
+			<label for="builtup_sft"> Builtup Area: </label>
+			<input type="number" class="form-control" min="0"
+				onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+				name="builtup_sft" id="builtup_sft" placeholder="Plinth area in Sq. Ft." />
+
+		</div>
+	</div>
+	<br>
+	<div class="alert alert-primary" id="land_alert" style="display:none">
+	  Total Land Area: 
+	  <span class="badge text-bg-warning"><span id="land_in_sft">25.32</span> sft </span>
+	  <span class="badge text-bg-warning"><span id="land_in_kanal">22.33</span> kanals </span>
+	</div>
+
+
+	<hr>
+
+	<div class="row align-items-center">
+
+		<div class="col-sm-4">
+
+			<div class="text-center">
+				<input type="radio" class="btn-check" name="residency_type" value="0" id="opt_residential"
+					autocomplete="off" checked>
+				<label class="btn btn-outline-success" for="opt_residential">Residential</label>
+
+				<input type="radio" class="btn-check" value="1" name="residency_type" id="opt_non_residential"
+					autocomplete="off">
+				<label class="btn btn-outline-success" for="opt_non_residential">Non Residential</label>
+			</div>
+
+		</div>
+
+		<div class="col-sm-4 text-center">
+			<input type="checkbox" class="btn-check" name="has_basement" id="has_basement" autocomplete="off">
+			<label class="btn btn-outline-primary" for="has_basement">Structure has basement</label>
+		</div>
+
+		<div class="col-sm-4">
+
+			<label for="num_floors">No of floors</label>
+
+			<select name="num_floors" class="form-control" id="num_floors">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">More than 3 floors</option>
+				<option value="5">Vacant land</option>
+			</select>
+		</div>
+
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<label for="structure_usage">Structure Usage: </label>
+			<select class="form-control" name="structure_usage" id="structure_usage">
+				<optgroup label="Residential Usage">
+					<option value="2">Residential Appartment/ Flat</option>
+					<option value="2.5">Residential House</option>
+				</optgroup>
+
+				<optgroup label="Non Residential Usage">
+					<option value="5">Industrial (Manufacturing)</option>
+					<option value="7">Institutional/ Public/ Semi Public</option>
+					<option value="12">Commercial, except 3 star and above Hotels: Towers and Hoardings</option>
+					<option value="15">3 Star and above Hotels, Towers and Hoardings</option>
+				</optgroup>
+
+
+			</select>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-sm-6">
+			<label for="construction_type">Construction Type:</label>
+			<select name="construction_type" id="construction_type" class="form-control">
+				<option value="1">RCC Construction</option>
+				<option value="0.9">Pucca (without RCC) Construction</option>
+				<option value="0.8">prefabricated Struture</option>
+				<option value="0.6">Kuccha/ Bamboo/ Wood/ Tin Structure</option>
+			</select>
+		</div>
+
+		<div class="col-sm-6">
+			<label for="structure_age">Structure Age:</label>
+			<select name="structure_age" id="structure_age" class="form-control">
+				<option value="1">0-20 Years Old</option>
+				<option value="0.9">20-30 Years Old</option>
+				<option value="0.8">30-40 Years Old</option>
+				<option value="0.7">40-50 Years Old</option>
+				<option value="0.6">50-60 Years Old</option>
+				<option value="0.5">More than 60 Years Old</option>
+			</select>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-sm-12">
+			<label for="occupancy_status">Occupancy Status:</label>
+			<select name="occupancy_status" id="occupancy_status" class="form-control">
+				<option value="0.75">Self Occupied (for more than 6 months)</option>
+				<option value="1">Others</option>
+			</select>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-sm-12">
+			<h4>Taxable Annual Value</h4>
+
+		<div class="tav_table">
+			<ul class="list-group mb-3">
+
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Municipality Type Factor (MTF) </div> <span class="text-muted" id="mtf">0.00</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Land Value Factor (LVF) </div> <span class="text-muted" id="lvf">0.00</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Area Factor (ARF)</div> <span class="text-muted" id="arf">0.00</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Floor Factor (FF)</div> <span class="text-muted" id="ff">0.00</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Usage Type Factor (UTF)</div> <span class="text-muted" id="utf">0.00</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Construction Type Factor (CTF)</div> <span class="text-muted" id="ctf">0.00</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Age Factor (AGF)</div> <span class="text-muted" id="agf">0.00</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Slab Factor (SF)</div> <span class="text-muted" id="sf">0.00</span>
+				</li>
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div>Occupancy Status (OSF)</div> <span class="text-muted" id="osf">0.00</span>
+				</li>
+			
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div><b>Taxable Annual Value (TAV)</b></div> <span class="text-muted"> <b id="tav">0.00</b> </span>
+				</li>
+			
+				<li class="list-group-item d-flex justify-content-between lh-sm">
+					<div class=""><b>ANNUAL TAX @ <span id="tax_rate">0</span>%</b></div> <span class="text-muted" > <b id="total_tax">0.00</b> </span>
+				</li>
+			
+			
+			</ul>
+		</div>
+
+		<!-- <div class="tav_formula">
+			TAV = 
+			<span id="mtf" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="MTF">0.00</span> ×
+			<span id="lvf" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="LVF">0.00</span> ×
+			<span id="arf" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ARF">0.00</span> ×
+			<span id="ff" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="FF">0.00</span> ×
+			<span id="utf" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="UTF">0.00</span> ×
+			<span id="ctf" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CTF">0.00</span> ×
+			<span id="agf" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="AGF">0.00</span> ×
+			<span id="sf" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="SF">0.00</span> ×
+			<span id="osf" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="OSF">0.00</span> =
+			<span id="tav" class="btn btn-success btn-sm">0.00</span> 
+		</div>
+		<br>
+		<div class="tav_formula">
+			Annual Tax @ <span id="tax_rate">0</span>% = Rs. <span id="total_tax">225</span>/-
+		</div> -->
+
+		</div>
+	</div>
+
+
+	<footer class="my-5 pt-5 text-muted text-center text-small">
+		<p class="mb-1">© 2023 Kodaish</p>
+	</footer>
+
+	<script src="main.js"></script>
+
+</body>
+
+</html>
